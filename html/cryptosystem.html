@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шифрование Меркла-Хеллмана</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 5px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Шифрование Меркла-Хеллмана</h1>
+        <label for="message">Введите сообщение (в двоичном формате):</label>
+        <input type="text" id="message" placeholder="1010" maxlength="20">
+        <button onclick="encrypt()">Зашифровать</button>
+        
+        <h2>Результат шифрования:</h2>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        // Функция для генерации системы ключей с суперувеличительной последовательностью
+        function generateKeys(n) {
+            let keys = [];
+            let sum = 0;
+
+            for (let i = 0; i < n; i++) {
+                // Генерация ключа по суперувеличительной последовательности
+                let key = Math.pow(2, i) + Math.floor(Math.random() * (Math.pow(2, i + 1) - Math.pow(2, i)));
+                keys.push(key);
+                sum += key;
+            }
+
+            return { keys, sum };
+        }
+
+        // Функция для шифрования сообщения
+        function encrypt() {
+            const message = document.getElementById('message').value;
+            const n = message.length;
+
+            // Генерация ключей
+            const { keys, sum } = generateKeys(n);
+            let encrypted = 0;
+
+            // Шифрование
+            for (let i = 0; i < n; i++) {
+                if (message[i] === '1') {
+                    encrypted += keys[i];
+                }
+            }
+
+            // Вывод зашифрованного сообщения и ключей
+            document.getElementById('result').innerText = `Зашифрованное сообщение: ${encrypted}\nКлючи: ${keys.join(', ')}\nСумма: ${sum}`;
+        }
+    </script>
+</body>
+</html>

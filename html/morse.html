@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Конвертер Азбуки Морзе</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        input[type=text], textarea {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            display: block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Шифрование Азбуки Морзе</h1>
+        
+        <textarea id="inputText" placeholder="Введите текст для конвертации"></textarea>
+        <button onclick="convertToMorse()">Конвертировать</button>
+        <button onclick="decodeMorse()">Декодировать</button>
+        <br><br>
+        <textarea id="outputText" readonly></textarea>
+    </div>
+    <script>
+        // Таблица соответствия русских букв и цифр к их эквивалентам в азбуке Морзе
+        const morseCode = {
+            'а': '.-',  'б': '-...', 'в': '.--',  'г': '--.', 'д': '-..',
+            'е': '.',   'ж': '...-', 'з': '--..', 'и': '..',  'й': '.---',
+            'к': '-.-', 'л': '.-..', 'м': '--',   'н': '-.',  'о': '---',
+            'п': '.--.','р': '.-.',  'с': '...',  'т': '-',   'у': '..-',
+            'ф': '..-.','х': '....', 'ц': '-.-.', 'ч': '---.','ш': '----',
+            'щ': '--.-', 'ъ': '-',   'ы': '-.--', 'ь': '-..-',
+            'э': '..-..','ю': '..--', 'я': '.-.-'
+        };
+
+        // Функция для конвертации русского текста в азбуку Морзе
+        function convertToMorse() {
+            let inputText = document.getElementById('inputText').value.toLowerCase();
+            let outputText = '';
+
+            for (let i = 0; i < inputText.length; i++) {
+                const char = inputText[i];
+                
+                if (char in morseCode) {
+                    outputText += morseCode[char] + ' ';
+                } else if (char === ' ') {
+                    // Если встретили пробел, добавляем два пробела между словами
+                    outputText += '/ ';
+                } else {
+                    // Пропускаем символы, которых нет в таблице
+                    continue;
+                }
+            }
+
+            document.getElementById('outputText').value = outputText.trim();
+        }
+
+        // Функция для декодировки азбуки Морзе в русский текст
+        function decodeMorse() {
+            let inputText = document.getElementById('inputText').value.split('/ ');
+            let outputText = '';
+
+            for (let word of inputText) {
+                let decodedWord = '';
+                let letters = word.split(' ');
+
+                for (let letter of letters) {
+                    for (let key in morseCode) {
+                        if (morseCode[key] === letter) {
+                            decodedWord += key;
+                            break;
+                        }
+                    }
+                }
+
+                outputText += decodedWord + ' ';
+            }
+
+            document.getElementById('outputText').value = outputText.trim();
+        }
+    </script>
+</body>
+</html>
