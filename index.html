@@ -1,0 +1,369 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Криптография</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/serif.css" id="theme">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="ocean">
+		<style>
+			.left {
+				float: left;
+				margin-left: 60px;
+			}
+			.right {
+				float: right;
+				margin-right: 60px;
+			}
+			.clear {
+				clear: both;
+			}
+			.reveal table.tic-toe {
+				border-collapse: separate !important;
+			}
+			td {
+				width: 40px;
+				height: 40px;
+				text-align: center !important;
+			}
+			td:nth-child(2) {
+				border-left: 1px solid white;
+				border-right: 1px solid white;
+			}
+
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section class="center">
+					<h2>Криптография</h2>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						### Определение
+						Криптография — это наука о методах защиты информации путем ее шифрования, обеспечивающая конфиденциальность, целостность и аутентичность данных.
+					</script>
+				</section>
+				<section
+				 data-background-image="img/01.png"
+				 data-background-size="contain"
+				 data-menu-title="Юмор"
+				 ></section>
+				 <section data-markdown>
+					<script type="text/template">
+						### Шифр Цезаря
+						Шифр Цезаря (или сдвиг Цезаря) — это один из самых простых и известных методов шифрования. Он основан на замене каждой буквы алфавита другой буквой, сдвинутой на фиксированное количество позиций.
+					</script>
+				</section>
+				<section data-markdown style="font-size: 70%;">
+					<script type="text/template">
+						### Пример шифра Цезаря
+						Пусть сдвиг равен 3. Это значит, что каждая буква будет заменяться на ту, которая находится через три позиции после неё в алфавите.
+
+						**Исходный текст:** Привет  
+						**Сдвиг:** 3
+
+						**Шаги шифрования:**
+
+						1. П → Т (П + 3)
+						2. р → у (Р + 3)
+						3. и → л (И + 3)
+						4. в → е (В + 3)
+						5. е → з (Е + 3)
+						6. т → х (Т + 3)
+						**Зашифрованное сообщение:** Тулезх
+					</script>
+				</section>
+				<section data-fullscreen data-menu-title="Шифр Цезаря">
+					<iframe data-src="html/caesar.html" class="stretch"></iframe>
+				</section>
+				<section data-markdown >
+					<script type="text/template">
+						### Код №1
+						```
+						function encrypt() {
+							const plaintext = document.getElementById('plaintext').value;
+						const shift = parseInt(document.getElementById('shift').value);
+						
+						if (!plaintext || !shift) return;
+						
+						// Алфавит, включающий русские буквы
+						const alphabet = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюяАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ0123456789';
+						
+						// Символы, которые остаются неизменными при шифровании
+						const nonShiftableChars = ',.? ';
+						
+						let ciphertext = '';
+						
+						for (let i = 0; i < plaintext.length; i++) {
+							const char = plaintext[i];
+							
+							if (nonShiftableChars.includes(char)) {
+								ciphertext += char; //символ без изменений
+							} else {
+								const index = alphabet.indexOf(char);
+								const shiftedIndex = (index + shift) % alphabet.length;
+								ciphertext += alphabet[shiftedIndex];
+							}
+						}
+						
+						document.getElementById('ciphertext').value = ciphertext;
+						}
+						```
+					</script>
+				</section>
+				<section data-markdown >
+					<script type="text/template">
+						### Задача о рюкзаке
+						Это классическая задача оптимизации, в которой нужно отобрать подмножество предметов с заданными весами и ценностями, чтобы максимизировать суммарную ценность, не превышая допустимый вес рюкзака.
+					</script>
+				</section>
+				<section data-markdown style="font-size: 50%;">
+					<script type="text/template">
+						### Задача о рюкзаке
+						Пусть у нас есть $n$ предметов, каждый из которых имеет вес $w_i$ и ценность $v_i$, где $i=1 \ldots n$. Также имеется ограничение по общему весу рюкзака $W$.
+
+						Наша цель состоит в том, чтобы выбрать такие предметы, которые максимально увеличивают общую ценность $V$, при этом их общий вес не превышает $W$
+
+						Математически задачу можно записать как оптимизационную задачу линейного программирования:
+
+						$$ V = \sum_{i=1}^{n} v_i x_i \rightarrow \text {max}
+						$$
+						при ограничениях:
+
+						$$ \sum_{i=1}^{n} w_i x_i \leq W,
+						$$
+						где $x_i$ — это бинарные переменные, принимающие значения 0 или 1 ($x_i=1$ , если предмет $i$ включен в рюкзак, иначе $x_i=0$).
+					</script>
+				</section>
+
+				<section data-menu-title="Юмор">
+					<img src="img/02.jpg" height="600px">
+				</section>
+				<section data-markdown style="font-size: 80%;">
+					<script type="text/template">
+						### Криптосистема Меркла-Хеллмана
+						В основе алгоритма рюкзака Меркла-Хеллмана лежит идея шифровать сообщение как решение набора проблем рюкзака. Предметы из кучи выбираются с помощью блока открытого текста, по длине равного количеству предметов в куче (биты открытого текста соответствуют значениям $x_i$), а шифртекст является полученной суммой.
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						### Пример криптосистемы
+
+						<div style="overflow-x:auto; font-size: 20px; line-height: 1.5;"> 
+							<table style="border-collapse: collapse;"> 
+								<tr> 
+									<th style="font-weight: bold; padding: 4px;border-right: 1px solid black;">Открытый текст</th> 
+									<th style="border-right: 1px solid black;">111001</th>
+									<th style="border-right: 1px solid black;">010110</th>
+									<th style="border-right: 1px solid black;">000000</th>
+									<th style="border-right: 1px solid black;">011000</th>
+								</tr> 
+								<tr> 
+									<td style="font-weight: bold;border-right: 1px solid black;">Рюкзак</td> 
+									<td style="border-right: 1px solid black;">1,5,6,11,14,20</td> 
+									<td style="border-right: 1px solid black;">1,5,6,11,14,20</td> 
+									<td style="border-right: 1px solid black;">1,5,6,11,14,20</td> 
+									<td style="border-right: 1px solid black;">1,5,6,11,14,20</td> 
+								</tr> 
+								<tr> 
+									<td style="font-weight: bold;border-right: 1px solid black;">Шифртекст</td> 
+									<td style="border-right: 1px solid black;">1+5+6+20=32</td> 
+									<td style="border-right: 1px solid black;">1+11+14=3</td> 
+									<td style="border-right: 1px solid black;">0=0</td> 
+									<td style="border-right: 1px solid black;">5+6=11</td> 
+								</tr> 
+							</table> 
+						</div> 
+					</script>
+				</section>
+				<section data-markdown style="font-size: 70%;">
+					<script type="text/template">
+						### Криптосистема Меркла-Хеллмана
+						На самом деле существуют две различные проблемы рюкзака, одна решается за линейные время, а другая, как считается,нет. Легкую проблему можно превратить в трудную. 
+
+						*Открытый ключ* предоставляет собой трудную проблему, которую легко использовать для шифрования, но невозможно для расшифрования сообщений. 
+
+						*Закрытый ключ* является легкой проблемой, давая простой способ расшифровать сообщения. 
+
+						Тому, кто не знает закрытый ключ, придется попытаться решить трудную проблему рюкзака.
+					</script>
+				</section>
+				
+				<section data-fullscreen data-menu-title="Шифр криптосистемы Меркла-Хеллмана">
+					<iframe data-src="html\cryptosystem.html" class="stretch"></iframe>
+				</section>
+				<section data-markdown >
+					<script type="text/template">
+						### Код №2
+
+						```
+						// Функция для генерации системы ключей с суперувеличительной последовательностью
+						function generateKeys(n) {
+							let keys = [];
+							let sum = 0;
+
+							for (let i = 0; i < n; i++) {
+								// Генерация ключа по суперувеличительной последовательности
+								let key = Math.pow(2, i) + Math.floor(Math.random() * (Math.pow(2, i + 1) - Math.pow(2, i)));
+								keys.push(key);
+								sum += key;
+							}
+
+							return { keys, sum };
+						}
+
+						// Функция для шифрования сообщения
+							function encrypt() {
+								const message = document.getElementById('message').value;
+								const n = message.length;
+
+								// Генерация ключей
+								const { keys, sum } = generateKeys(n);
+								let encrypted = 0;
+
+								// Шифрование
+								for (let i = 0; i < n; i++) {
+									if (message[i] === '1') {
+										encrypted += keys[i];
+									}
+								}
+
+								// Вывод зашифрованного сообщения и ключей
+								document.getElementById('result').innerText = `Зашифрованное сообщение: ${encrypted}\nКлючи: ${keys.join(', ')}\nСумма: ${sum}`;
+							}
+						```
+					</script>
+				</section>
+				<section data-markdown>
+					<script type="text/template">
+						### Азбука Морзе
+						Это система кодирования текстовой информации с помощью двух сигналов разной продолжительности: точки и тире. Она была разработана для передачи сообщений по телеграфу и широко использовалась в радиосвязи.
+					</script>
+				</section>
+				<section>
+					<h3>Алфавит </h3>
+					<img src="img\03.png" height="500px">
+				</section>
+				<section data-fullscreen data-menu-title="Шифрование Азбуки Морзе">
+					<iframe data-src="html\morse.html" class="stretch"></iframe>
+				</section>
+				<section data-markdown >
+					<script type="text/template">
+						### Код №3
+						```
+						// Таблица соответствия русских букв и цифр к их эквивалентам в азбуке Морзе
+						const morseCode = {
+							'а': '.-',  'б': '-...', 'в': '.--',  'г': '--.', 'д': '-..',
+							'е': '.',   'ж': '...-', 'з': '--..', 'и': '..',  'й': '.---',
+							'к': '-.-', 'л': '.-..', 'м': '--',   'н': '-.',  'о': '---',
+							'п': '.--.','р': '.-.',  'с': '...',  'т': '-',   'у': '..-',
+							'ф': '..-.','х': '....', 'ц': '-.-.', 'ч': '---.','ш': '----',
+							'щ': '--.-', 'ъ': '-',   'ы': '-.--', 'ь': '-..-',
+							'э': '..-..','ю': '..--', 'я': '.-.-'
+						};
+
+						// Функция для конвертации русского текста в азбуку Морзе
+						function convertToMorse() {
+							let inputText = document.getElementById('inputText').value.toLowerCase();
+							let outputText = '';
+
+							for (let i = 0; i < inputText.length; i++) {
+								const char = inputText[i];
+								
+								if (char in morseCode) {
+									outputText += morseCode[char] + ' ';
+								} else if (char === ' ') {
+									// Если встретили пробел, добавляем два пробела между словами
+									outputText += '/ ';
+								} else {
+									// Пропускаем символы, которых нет в таблице
+									continue;
+								}
+							}
+
+							document.getElementById('outputText').value = outputText.trim();
+						}
+
+						// Функция для декодировки азбуки Морзе в русский текст
+						function decodeMorse() {
+							let inputText = document.getElementById('inputText').value.split('/ ');
+							let outputText = '';
+
+							for (let word of inputText) {
+								let decodedWord = '';
+								let letters = word.split(' ');
+
+								for (let letter of letters) {
+									for (let key in morseCode) {
+										if (morseCode[key] === letter) {
+											decodedWord += key;
+											break;
+										}
+									}
+								}
+
+								outputText += decodedWord + ' ';
+							}
+
+							document.getElementById('outputText').value = outputText.trim();
+						}
+						```
+					</script>
+				</section>
+				<section
+				 data-background-image="img/04.jpg"
+				 data-background-size="contain"
+				 data-menu-title="Юмор"
+				 ></section>
+				 <section data-menu-title="Юмор">
+					<img src="img/05.jpg" height="600px">
+				</section>
+				<section data-menu-title="Юмор">
+					<img src="img/06.jpg" height="600px">
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+				center: false,
+				slideNumber: true,
+				controls: true,
+				dependencies:[
+					{
+						src: 'plugin/menu/menu.js'
+					},
+					{
+						src: 'plugin/fullscreen/fullsreen.js'
+					},
+					{
+						src: 'plugin/katex/katex.js',
+						async: true,
+					},
+				],
+				menu:{
+					numbers: true,
+					markers: true,
+				},
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+		</script>
+	</body>
+</html>
